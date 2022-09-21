@@ -98,12 +98,13 @@ int main(int argc, char **argv){
         // Writing output file
         cout << "Writing " << ofname << " ..." << endl;
         ofstream ofile(ofname);
-        ofile << "number,2theta,d^-2,index,a" << endl;
+        ofile << "number,2theta,d^-2,index,nr,a" << endl;
         for (int j = 0; j < peaks.size(); j++) {
             ofile << peaks.at(j).number << ',';
             ofile << peaks.at(j).theta2 << ',';
             ofile << peaks.at(j).d2 << ',';
             ofile << peaks.at(j).index << ',';
+            ofile << peaks.at(j).nr << ',';
             ofile << peaks.at(j).a << endl;
         }
         ofile.close();
