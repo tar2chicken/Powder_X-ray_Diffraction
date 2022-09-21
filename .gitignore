@@ -30,3 +30,10 @@
 *.exe
 *.out
 *.app
+
+# Makefile
+Makefile
+
+# Directory for debug
+data
+data_copy

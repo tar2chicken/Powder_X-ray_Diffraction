@@ -1,0 +1,3 @@
+input_file : output_file : lattice_type : lattice_const : error
+sample_data/data1.csv : sample_data/data1_out.csv : BCC (body-centered cubic) : 3.16398 : 0.000378114
+sample_data/data2.csv : sample_data/data2_out.csv : diamond structure : 5.42963 : 0.00130225
