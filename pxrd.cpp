@@ -40,7 +40,7 @@ struct peakdata {
     double nr;      // Nelson-Riley function
 };
 
-void tabletopeaks(const double lambda, const vector<vector<double>>& table, vector<peakdata>& peaks, string& lattice_type);
+void tabletopeaks(const vector<vector<double>>& table, vector<peakdata>& peaks, string& lattice_type, const double lambda = 1.5405);
 
 void refine(const vector<peakdata>& peaks, double& lattice_const, double& sigma);
 
@@ -90,10 +90,9 @@ int main(int argc, char **argv){
         csvtotable(ifname, table);
 
         // Determination of the index and lattice constant for each peak
-        double lambda = 1.5405;
         vector<peakdata> peaks;
         string lattice_type;
-        tabletopeaks(lambda, table, peaks, lattice_type);
+        tabletopeaks(table, peaks, lattice_type);
 
         // Writing output file
         cout << "Writing " << ofname << " ..." << endl;
@@ -206,7 +205,7 @@ void csvtotable(const string ifname, vector<vector<double>>& table) {
 
 
 
-void tabletopeaks(const double lambda, const vector<vector<double>>& table, vector<peakdata>& peaks, string& lattice_type) {
+void tabletopeaks(const vector<vector<double>>& table, vector<peakdata>& peaks, string& lattice_type, const double lambda) {
     const double pi = acos(-1);
 
     for (int i = 0; i < table.size(); i++) {
