@@ -27,7 +27,7 @@ using std::filesystem::exists;
 
 
 
-void printlog(const string lfname);
+void printlog(const string lfname = "pxrd.log");
 
 void csvtotable(const string ifname, vector<vector<double>>& table);
 
@@ -44,6 +44,8 @@ void tabletopeaks(const vector<vector<double>>& table, vector<peakdata>& peaks, 
 
 void refine(const vector<peakdata>& peaks, double& lattice_const, double& sigma);
 
+void addlog(const string ifname, const string ofname, const string lattice_type, const double lattice_const, const double sigma, const string lfname = "pxrd.log");
+
 
 
 int main(int argc, char **argv){
@@ -54,9 +56,8 @@ int main(int argc, char **argv){
     }
 
     string arg1 = argv[1];
-    const string lfname = "pxrd.log";
     if (arg1 == "-l") {
-        printlog(lfname);
+        printlog();
         return 0;
     }
 
@@ -111,21 +112,7 @@ int main(int argc, char **argv){
         // Refinement of the lattice constant
         double lattice_const, sigma;
         refine(peaks, lattice_const, sigma);
-
-        // Writing log file
-        int flag_first = 0;
-        if (!exists(lfname)) {
-            flag_first = 1;
-        } 
-        ofstream logfile(lfname, std::ios::app);
-        if (flag_first) {
-            logfile << "input_file : output_file : lattice_type : lattice_const : error" << endl;
-        }
-        logfile << ifname << " : ";
-        logfile << ofname << " : ";
-        logfile << lattice_type << " : ";
-        logfile << lattice_const << " : ";
-        logfile << sigma << endl;
+        addlog(ifname, ofname, lattice_type, lattice_const, sigma);
     }
 
     if (errcode == 0) {
@@ -273,5 +260,25 @@ void refine(const vector<peakdata>& peaks, double& lattice_const, double& sigma)
 
     lattice_const = intercept;
     sigma = sigma0 * sigmai;
+    return;
+}
+
+
+
+void addlog(const string ifname, const string ofname, const string lattice_type, const double lattice_const, const double sigma, const string lfname) {
+    int flag_first = 0;
+    if (!exists(lfname)) {
+        flag_first = 1;
+    }
+    ofstream logfile(lfname, std::ios::app);
+    if (flag_first) {
+        logfile << "input_file : output_file : lattice_type : lattice_const : error" << endl;
+    }
+    logfile << ifname << " : ";
+    logfile << ofname << " : ";
+    logfile << lattice_type << " : ";
+    logfile << lattice_const << " : ";
+    logfile << sigma << endl;
+    logfile.close();
     return;
 }
