@@ -96,10 +96,9 @@ int main(int argc, char **argv){
         tabletopeaks(table, peaks, lattice_type);
 
         // Writing output file
-        cout << "Writing " << ofname << " ..." << endl;
         ofstream ofile(ofname);
         ofile << "number,2theta,d^-2,index,nr,a" << endl;
-        for (int j = 0; j < peaks.size(); j++) {
+        for (int j = 0; j < static_cast<int>(peaks.size()); j++) {
             ofile << peaks.at(j).number << ',';
             ofile << peaks.at(j).theta2 << ',';
             ofile << peaks.at(j).d2 << ',';
@@ -115,9 +114,6 @@ int main(int argc, char **argv){
         addlog(ifname, ofname, lattice_type, lattice_const, sigma);
     }
 
-    if (errcode == 0) {
-        cout << "The command completed successfully!" << endl;
-    }
     return errcode;
 }
 
@@ -125,7 +121,7 @@ int main(int argc, char **argv){
 
 void printlog(const string lfname) {
     if (!exists(lfname)) {
-        cout << "No log" << endl;
+        cout << "No log\n" << endl;
         return;
     }
 
@@ -150,12 +146,12 @@ void printlog(const string lfname) {
         istringstream field_iss_1(field_s);
         double field_d;
         field_iss_1 >> field_d;
-        cout << field_d << " ± ";
+        cout << field_d << " +- ";
 
         getline(line_iss, field_s);
         istringstream field_iss_2(field_s);
         field_iss_2 >> field_d;
-        cout << field_d << " Å\n" << endl;
+        cout << field_d << " angstrom\n" << endl;
     }
     logfile.close();
     return;
@@ -195,7 +191,7 @@ void csvtotable(const string ifname, vector<vector<double>>& table) {
 void tabletopeaks(const vector<vector<double>>& table, vector<peakdata>& peaks, string& lattice_type, const double lambda) {
     const double pi = acos(-1);
 
-    for (int i = 0; i < table.size(); i++) {
+    for (int i = 0; i < static_cast<int>(table.size()); i++) {
         peakdata peak;
         peak.number = static_cast<int>(table.at(i).at(0));
         peak.theta2 = table.at(i).at(1);
@@ -227,7 +223,7 @@ void tabletopeaks(const vector<vector<double>>& table, vector<peakdata>& peaks, 
         parameter = 1;
     }
 
-    for (int i = 0; i < peaks.size(); i++) {
+    for (int i = 0; i < static_cast<int>(peaks.size()); i++) {
         double index_d = peaks.at(i).d2 * parameter / peaks.at(0).d2;
         peaks.at(i).index = round(index_d);
         peaks.at(i).a = sqrt(peaks.at(i).index / peaks.at(i).d2);
@@ -244,7 +240,7 @@ void refine(const vector<peakdata>& peaks, double& lattice_const, double& sigma)
     double NR = 0;
     double NR2 = 0;
     double NRA = 0;
-    for (int i = 0; i < peaks.size(); i++) {
+    for (int i = 0; i < static_cast<int>(peaks.size()); i++) {
         A += peaks.at(i).a;
         A2 += pow(peaks.at(i).a, 2);
         NR += peaks.at(i).nr;
@@ -280,5 +276,6 @@ void addlog(const string ifname, const string ofname, const string lattice_type,
     logfile << lattice_const << " : ";
     logfile << sigma << endl;
     logfile.close();
+    cout << ifname << " : " << lattice_type << " : " << lattice_const << " angstrom\n" << endl;
     return;
 }
