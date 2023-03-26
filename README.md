@@ -109,5 +109,5 @@ $$ f(\theta) = \frac{\cos^2\theta}{\sin\theta} + \frac{\cos^2\theta}{\theta} $$
 * `pxrd.log` を削除するとログが消えます.
 
 ## 問い合わせ
-何か気づいたことがあれば, 私の Twitter [@tar_2_chicken](https://twitter.com/tar_2_chicken) に DM を送ってください. 
+何か気づいたことがあれば, 私の Twitter [@tar2chicken](https://twitter.com/tar2chicken) に DM を送ってください. 
 GitHub のコミュニケーションツールは使い慣れていないので, Twitter のほうが助かります.
